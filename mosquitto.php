@@ -295,7 +295,6 @@ class Client
      * be called at any time.
      *
      * @param int $messageRetryPeriod  The retry period
-
      */
     public function setMessageRetry($messageRetryPeriod) {}
 
@@ -406,7 +405,7 @@ class Message
     /**
      * Tokenise a topic or subscription string into an array of strings representing the topic hierarchy.
      *
-     * @param  string $topic
+     * @param  string $topic          The topic to tokenise
      * @return array
      */
     public static function tokeniseTopic($topic) {}
