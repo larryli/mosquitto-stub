@@ -23,6 +23,7 @@ class Client
      * @param string|null  $id The client ID. If omitted or null, one will be generated at random.
      * @param boolean $cleanSession Set to true to instruct the broker to clean all messages and subscriptions on
      * disconnect. Must be true if the $id parameter is null.
+     * @throws Exception
      */
     public function __construct($id = null, $cleanSession = true) {}
 
@@ -31,6 +32,7 @@ class Client
      *
      * @param string    $username Username to supply to the broker
      * @param string    $password Password to supply to the broker
+     * @throws Exception
      */
     public function setCredentials($username, $password) {}
 
@@ -48,6 +50,7 @@ class Client
      * @param string $certfile Path to the PEM encoded certificate file for this client. Optional.
      * @param string $keyfile Path to a file containing the PEM encoded private key for this client. Required if certfile is set.
      * @param string $password The password for the keyfile, if it is encrypted. If null, the password will be asked for on the command line.
+     * @throws Exception
      */
     public function setTlsCertificates($capath, $certfile = null, $keyfile = null, $password = null) {}
 
@@ -58,6 +61,7 @@ class Client
      *
      * @param boolean $value If set to false, the default, certificate hostname checking is performed. If set to `true`,
      * no hostname checking is performed and the connection is insecure.
+     * @throws Exception
      */
     public function setTlsInsecure($value) {}
 
@@ -72,6 +76,7 @@ class Client
      *                           1.0.1 are `tlsv1.2`, `tlsv1.1` and `tlsv1`.
      * @param string $cipers     A string describing the ciphers available for use. See the `openssl ciphers` tool for
      *                           more information. If `null`, the default set will be used.
+     * @throws Exception
      */
     public function setTlsOptions($certReqs, $tlsVersion, $cipers) {}
 
@@ -84,6 +89,7 @@ class Client
      *                              settings.
      * @param string    $cipers     A string describing the ciphers available for use. See the openssl ciphers tool
      *                              for more information. If NULL, the default set will be used.
+     * @throws Exception
      */
     public function setTlsPSK($psk, $identity, $cipers) {}
 
@@ -95,11 +101,13 @@ class Client
      * @param string    $payload    The data to send.
      * @param int       $qos        Optional. Default 0. Integer 0, 1, or 2 indicating the Quality of Service to be used.
      * @param boolean   $retain     Optional. Default false. If `true`, the message will be retained.
+     * @throws Exception
      */
     public function setWill($topic, $payload, $qos = 0, $retain = false) {}
 
     /**
      * Remove a previously-set will. No parameters.
+     * @throws Exception
      */
     public function clearWill() {}
 
@@ -112,6 +120,7 @@ class Client
      * @param int       $exponentialDelay       Set max delay between successive reconnection attempts when
      *                                          exponential backoff is enabled
      * @param boolean   $exponentialBackoff     Pass `true` to enable exponential backoff
+     * @throws Exception
      */
     public function setReconnectDelay($reconnectDelay, $exponentialDelay, $exponentialBackoff) {}
 
@@ -123,11 +132,13 @@ class Client
      * @param int       $keepalive  Optional. Number of sections after which the broker should PING the client if no
      *                              messages have been received.
      * @param string    $interface  Optional. The address or hostname of a local interface to bind to for this connection.
+     * @throws Exception
      */
     public function connect($host, $port = 1883, $keepalive = 60, $interface = null) {}
 
     /**
      * Disconnect from the broker. No parameters.
+     * @throws Exception
      */
     public function disconnect() {}
 
@@ -156,6 +167,7 @@ class Client
      * 3	| Connection refused (broker unavailable )
      * 4-255 | 	Reserved for future use
      *
+     * @throws Exception
      * @link https://github.com/mgdm/Mosquitto-PHP#onconnect
      */
     public function onConnect($callback) {}
@@ -175,6 +187,7 @@ class Client
      * $rc (int) – Reason for the disconnection. 0 means the client requested it.
      * Any other value indicates an unexpected disconnection.
      *
+     * @throws Exception
      * @link https://github.com/mgdm/Mosquitto-PHP#ondisconnect
      */
     public function onDisconnect($callback) {}
@@ -201,6 +214,7 @@ class Client
      * - `Client::LOG_WARNING`
      * - `Client::LOG_ERR`
      *
+     * @throws Exception
      * @link https://github.com/mgdm/Mosquitto-PHP#onlog
      */
     public function onLog($callback) {}
@@ -221,6 +235,7 @@ class Client
      *
      * This function needs to return the granted QoS for each subscription, but currently cannot.
      *
+     * @throws Exception
      * @link https://github.com/mgdm/Mosquitto-PHP#onsubscribe
      */
     public function onSubscribe($callback) {}
@@ -231,13 +246,14 @@ class Client
      * @param callback $callback The callback
      *
      * ```php
-     * function ($mid, $qosCount)
+     * function ($mid)
      * ```
      *
      * The callback should take parameters of the form:
      *
      * $mid (int) – Message ID of the unsubscribe message
      *
+     * @throws Exception
      * @link https://github.com/mgdm/Mosquitto-PHP#onunsubscribe
      */
     public function onUnsubscribe($callback) {}
@@ -255,6 +271,7 @@ class Client
      *
      * $message (Message) - A `Message` object containing the message data
      *
+     * @throws Exception
      * @link https://github.com/mgdm/Mosquitto-PHP#onmessage
      */
     public function onMessage($callback) {}
@@ -275,6 +292,7 @@ class Client
      *
      * $mid (int) – the message id returned by `publish()`
      *
+     * @throws Exception
      * @link https://github.com/mgdm/Mosquitto-PHP#onpublish
      */
     public function onPublish($callback) {}
@@ -287,6 +305,7 @@ class Client
      * Set to 0 for no maximum.
      *
      * @param int $maxInFlightMessages  The maximum
+     * @throws Exception
      */
     public function setMaxInFlightMessages($maxInFlightMessages ) {}
 
@@ -295,6 +314,7 @@ class Client
      * be called at any time.
      *
      * @param int $messageRetryPeriod  The retry period
+     * @throws Exception
      */
     public function setMessageRetry($messageRetryPeriod) {}
 
@@ -306,6 +326,7 @@ class Client
      * @param int       $qos        Integer value 0, 1 or 2 indicating the QoS for this message
      * @param boolean   $retain     If `true`, make this message retained
      * @return int                  The message ID returned by the broker. Warning: the message ID is not unique.
+     * @throws Exception
      */
     public function publish($topic, $payload, $qos, $retain) {}
 
@@ -316,6 +337,7 @@ class Client
      * @param   int       $qos      The QoS to request for this subscription
      * @return  int                 Returns the message ID of the subscription message,
      *                              so this can be matched up in the `onSubscribe()` callback.
+     * @throws Exception
      */
     public function subscribe($topic, $qos) {}
 
@@ -327,6 +349,7 @@ class Client
      *
      * @return  int               Returns the message ID of the subscription message,
      *                            so this can be matched up in the `onUnsubscribe()` callback.
+     * @throws Exception
      */
     public function unsubscribe($topic, $qos) {}
 
@@ -339,6 +362,7 @@ class Client
      *
      * @param int $timeout      Optional. Number of milliseconds to wait for network activity. Pass 0 for instant
      *                          timeout. Defaults to 1000.
+     * @throws Exception
      */
     public function loop($timeout = 1000) {}
 
@@ -351,12 +375,14 @@ class Client
      *
      * @param int $timeout      Optional. Number of milliseconds to wait for network activity. Pass 0 for instant
      *                          timeout. Defaults to 1000.
+     * @throws Exception
      */
     public function loopForever($timeout = 1000) {}
 
     /**
      * Exit the loopForever event loop without disconnecting. You will need to re-enter the loop afterwards in order to
      * maintain the connection.
+     * @throws Exception
      */
     public function exitLoop() {}
 }
@@ -399,6 +425,7 @@ class Message
      * @param  string  $topic         The topic to match
      * @param  string  $subscription  The subscription to match
      * @return boolean
+     * @throws Exception
      */
     public static function topicMatchesSub($topic, $subscription) {}
 
@@ -407,6 +434,7 @@ class Message
      *
      * @param  string $topic          The topic to tokenise
      * @return array
+     * @throws Exception
      */
     public static function tokeniseTopic($topic) {}
 }
