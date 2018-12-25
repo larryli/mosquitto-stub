@@ -445,7 +445,7 @@ class Message
  *
  * @package Mosquitto
  */
-class Exception
+class Exception extends \Exception
 {
 
 }
